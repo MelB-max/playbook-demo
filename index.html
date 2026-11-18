@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Data Science Product Playbook · Kestrel Academy (demo)</title>
+<script>try{var t=localStorage.getItem("pb-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%231A1430%22%2F%3E%3Cg%20transform%3D%22translate(8%2C17)%20scale(.161)%22%3E%3Cpath%20fill%3D%22%238B6CF0%22%20d%3D%22M0%20188L104%200H176L72%20188Z%22%2F%3E%3Cpath%20fill%3D%22%23C9B8FF%22%20d%3D%22M160%2070L210%200H298L214%20108Z%22%2F%3E%3Cpath%20fill%3D%22%236A4FD8%22%20d%3D%22M200%20120L238%2070L298%20188H246Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<meta name="description" content="A product playbook for sales new joiners (portfolio demo with fictional data).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Product playbooks: one shared shell (Playbook shell/shell.html), content per program.
+   Left nav rail + one page at a time, prev/next at the foot. Light and dark themes. */
+:root,[data-theme="dark"]{
+  --bg:#0f0d14; --panel:#17141f; --panel-2:#1f1b2a; --line:#2d2839; --fg:#efeaf5; --muted:#a79fb6; --faint:#7a7290;
+  --coral:#f47a55; --coral-soft:rgba(244,122,85,.14); --violet:#9b85ff; --violet-soft:rgba(140,116,255,.16);
+  --mint:#5fd3a6; --mint-soft:rgba(95,211,166,.13); --amber:#f2c14e; --amber-soft:rgba(242,193,78,.13); --rose:#ff6b8a; --rose-soft:rgba(255,107,138,.13);
+  --on-accent:#140f1c; --shadow:none;
+  color-scheme:dark;
+}
+[data-theme="light"]{
+  --bg:#f7f5fb; --panel:#ffffff; --panel-2:#f1ecf9; --line:#e2dbed; --fg:#1d1729; --muted:#5b536b; --faint:#857c97;
+  --coral:#c94a24; --coral-soft:rgba(217,84,46,.10); --violet:#6a3fd4; --violet-soft:rgba(106,63,212,.10);
+  --mint:#0f7d58; --mint-soft:rgba(19,138,99,.10); --amber:#946400; --amber-soft:rgba(196,140,20,.13); --rose:#c22d57; --rose-soft:rgba(200,50,90,.09);
+  --on-accent:#ffffff; --shadow:0 1px 2px rgba(40,20,80,.06),0 4px 14px rgba(40,20,80,.05);
+  color-scheme:light;
+}
+:root{
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --nav-w:272px; --r:12px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.6;margin:0;transition:background .2s,color .2s}
+a{color:var(--coral)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:6px}
+.app{display:grid;grid-template-columns:var(--nav-w) minmax(0,1fr);min-height:100%}
+
+/* ---------- nav ---------- */
+nav.side{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--line);background:var(--panel);padding:22px 14px 30px;display:flex;flex-direction:column}
+.brand{padding:0 8px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.wm{height:26px;width:auto;display:block}
+[data-theme="dark"] .wm-l,[data-theme="light"] .wm-d{display:none}
+.brand b{font-family:var(--display);font-weight:600;font-size:19px;display:block;line-height:1.15;margin-top:12px}
+.brand small{color:var(--muted);font-size:12px;display:block}
+.navgroup{margin:16px 0 6px;padding:0 8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;justify-content:space-between}
+.navgroup span:last-child{color:var(--coral)}
+.navlist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.navlist button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:26px 1fr;gap:6px;align-items:center;width:100%;padding:7px 8px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:14px;line-height:1.3}
+.navlist button .n{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.navlist button:hover{background:var(--panel-2);color:var(--fg)}
+.navlist button[aria-current="page"]{background:var(--coral-soft);color:var(--fg)}
+.navlist button[aria-current="page"] .n{color:var(--coral)}
+.navlist button:focus-visible{outline:2px solid var(--coral)}
+.nav-foot{margin-top:auto;padding:18px 8px 0}
+.theme-btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);font-size:13px;color:var(--fg)}
+.theme-btn:hover{border-color:var(--coral)}
+.theme-btn:focus-visible{outline:2px solid var(--coral)}
+.theme-btn svg{width:15px;height:15px}
+.topbar{display:none}
+
+/* ---------- main ---------- */
+main{padding-block:34px 60px;padding-inline:clamp(16px,4vw,56px);min-width:0}
+.page{max-width:1040px;margin:0 auto}
+.page[hidden]{display:none!important}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.eyebrow .day{color:var(--violet)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.4vw,46px);line-height:1.08;margin:10px 0 12px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--coral);font-weight:400}
+h2{font-family:var(--display);font-weight:600;font-size:22px;margin:36px 0 12px;text-wrap:balance}
+h3{font-size:16px;margin:0 0 6px;font-weight:700}
+.lead{font-size:17.5px;color:var(--muted);max-width:68ch;margin:0 0 26px}
+.lead strong{color:var(--fg);font-weight:500}
+p{max-width:70ch}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 16px;min-width:0;box-shadow:var(--shadow)}
+.card p{margin:.3em 0 0;color:var(--muted);font-size:14.5px}
+.card ul,.card ol{margin:.4em 0 0;padding-left:18px;color:var(--muted);font-size:14.5px}
+.card li+li{margin-top:3px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);color:var(--fg);white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.t-coral{--c:var(--coral);--cs:var(--coral-soft)}
+.t-violet{--c:var(--violet);--cs:var(--violet-soft)}
+.t-mint{--c:var(--mint);--cs:var(--mint-soft)}
+.t-amber{--c:var(--amber);--cs:var(--amber-soft)}
+.t-rose{--c:var(--rose);--cs:var(--rose-soft)}
+.tint{background:var(--cs);border-color:transparent;box-shadow:none}
+.tint h3,.tint .label{color:var(--c)}
+.quote{font-family:var(--display);font-style:italic;font-size:16.5px;line-height:1.45;color:var(--fg);border-left:2px solid var(--c,var(--coral));padding-left:12px;margin:10px 0 0}
+.callout{display:flex;gap:14px;align-items:flex-start;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:22px 0}
+.callout .ic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--coral-soft);color:var(--coral);font-weight:700;font-size:14px}
+.callout p{margin:0;color:var(--fg)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:500;background:var(--panel-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--fg);font-weight:500}
+td{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+s{color:var(--faint)}
+
+/* story opener */
+.persona{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;align-items:start}
+.diary{display:grid;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.diary div{position:relative;padding:4px 0 14px 18px}
+.diary div::before{content:"";position:absolute;left:-7px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--c,var(--violet))}
+.diary b{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--c,var(--violet));display:block}
+.diary span{color:var(--fg)}
+.say{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:18px 0}
+.say .label{color:var(--coral)}
+.say p{font-family:var(--display);font-size:19px;line-height:1.4;color:var(--fg);margin:6px 0 0;max-width:none}
+
+/* pager */
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:48px;padding-top:20px;border-top:1px solid var(--line)}
+.pager button{all:unset;cursor:pointer;display:grid;gap:2px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;max-width:48%;background:var(--panel)}
+.pager button:hover{border-color:var(--coral)}
+.pager button:focus-visible{outline:2px solid var(--coral)}
+.pager .dir{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.pager .ttl{font-weight:500}
+.pager .next{text-align:right;margin-left:auto}
+.pager button[hidden]{display:none}
+
+/* segmented toggles */
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:4px;gap:4px;margin-bottom:16px}
+.seg button{all:unset;cursor:pointer;padding:7px 16px;border-radius:999px;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:500}
+.seg button:focus-visible{outline:2px solid var(--coral)}
+.compare-rows{display:grid;gap:8px}
+.crow{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;padding:12px 16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;align-items:baseline}
+.crow .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.crow .v{font-size:15.5px}
+.metaphor{font-family:var(--display);font-size:22px;line-height:1.35;margin:18px 0 0;max-width:40ch}
+
+/* stepper story */
+.stepper{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:6px;margin-bottom:14px}
+.stepper button{all:unset;cursor:pointer;padding:10px 10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:13px;line-height:1.25}
+.stepper button .label{display:block;margin-bottom:3px}
+.stepper button[aria-selected="true"]{border-color:var(--coral);background:var(--coral-soft)}
+.stepper button[aria-selected="true"] .label{color:var(--coral)}
+.stepper button:focus-visible{outline:2px solid var(--coral)}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.story .card{min-height:150px}
+.story .big{font-family:var(--display);font-size:19px;line-height:1.4;color:var(--fg);margin-top:6px}
+
+/* flip cards */
+.deck-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.flip{perspective:1000px;min-height:230px;cursor:pointer}
+.flip[hidden]{display:none}
+.flip .in{position:relative;width:100%;height:100%;min-height:230px;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:16px;border:1px solid var(--line);display:flex;flex-direction:column;overflow:auto}
+.flip .front{background:var(--panel);box-shadow:var(--shadow)}
+.flip .back{background:var(--panel-2);transform:rotateY(180deg);border-color:var(--c,var(--coral))}
+.flip .front h3{font-family:var(--display);font-size:20px;font-weight:600;margin-top:auto}
+.flip .front .tag{align-self:flex-start}
+.flip .hint{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:8px}
+.flip .back p{margin:0;font-size:14px;color:var(--fg)}
+.flip .back .quote{font-size:14.5px}
+.flip:focus-visible{outline:2px solid var(--coral);border-radius:var(--r)}
+.tall .flip,.tall .flip .in{min-height:290px}
+.btn{all:unset;cursor:pointer;padding:7px 14px;border-radius:999px;border:1px solid var(--line);font-size:13px;background:var(--panel)}
+.btn:hover{border-color:var(--coral)}
+.btn:focus-visible{outline:2px solid var(--coral)}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.single{max-width:600px;margin:0 auto}
+.single .flip,.single .flip .in{min-height:300px}
+.single .flip .front h3{font-size:26px}
+.single .flip .back p{font-size:15.5px;line-height:1.55}
+.counter{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* cycle wheel */
+.loop-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;align-items:start;margin-top:6px}
+.loop{position:relative;aspect-ratio:1;max-width:430px;width:100%;margin:auto;container-type:inline-size}
+.loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.loop .ring{fill:none;stroke:var(--line);stroke-width:.8;stroke-dasharray:2 2}
+.loop .arc{fill:none;stroke:var(--faint);stroke-width:.7}
+.loop .ahead{fill:var(--faint)}
+.loop .node{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-50%);width:clamp(80px,28cqw,124px);text-align:center;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:clamp(5px,2cqw,9px) clamp(4px,1.8cqw,8px);font-size:clamp(11px,3.1cqw,13px);line-height:1.25;box-shadow:var(--shadow)}
+.loop .node b{display:block;font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:2px}
+.loop .node:hover{border-color:var(--c,var(--coral))}
+.loop .node[aria-pressed="true"]{border-color:var(--c,var(--coral));background:var(--cs,var(--coral-soft))}
+.loop .node[aria-pressed="true"] b{color:var(--c,var(--coral))}
+.loop .node:focus-visible{outline:2px solid var(--coral)}
+.loop .center{position:absolute;inset:34%;font-size:clamp(11px,3.4cqw,15px)!important;display:grid;place-items:center;text-align:center;font-family:var(--display);font-style:italic;color:var(--muted);font-size:15px;line-height:1.3}
+.stage-panel h3{font-family:var(--display);font-size:24px;font-weight:600}
+
+/* Venn */
+.venn-wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:center}
+.venn svg{width:100%;height:auto;max-width:440px;display:block;margin:auto}
+.venn circle{cursor:pointer;fill:var(--cs);stroke:var(--c);stroke-width:1.5;fill-opacity:1;transition:opacity .2s}
+.venn circle:focus-visible{outline:none;stroke-width:3}
+.venn text{fill:var(--fg);font-family:var(--body);pointer-events:none}
+.venn .vt{font-weight:700;font-size:17px}
+.venn .vc{font-family:var(--display);font-style:italic;font-size:18px}
+
+/* target-group map */
+.mm-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(circle at 50% 50%,var(--panel-2),var(--bg) 72%)}
+.mm{display:block;width:100%;min-width:680px;height:auto}
+.mm-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.mm-tabs .btn[aria-pressed="true"]{background:var(--cs);color:var(--fg);border-color:var(--c)}
+.mm .edge{stroke:var(--line);stroke-width:1.5;fill:none;transition:stroke .2s}
+.mm .edge.hot{stroke:var(--c);stroke-width:2.2}
+.mm .nd rect{fill:var(--panel);stroke:var(--line)}
+.mm .nd.hot rect{stroke:var(--c)}
+.mm .nd text{fill:var(--fg);font-family:var(--body);font-size:12.5px}
+.mm .br{cursor:pointer;outline:none}
+.mm .br rect{fill:var(--cs);stroke:var(--c);stroke-width:1.5}
+.mm .br.hot rect{stroke-width:3}
+.mm .br text{font-weight:700;font-size:14px;fill:var(--fg);font-family:var(--body)}
+.mm .br .sub{font-weight:400;font-size:11.5px;fill:var(--muted)}
+.mm .br:focus-visible rect{stroke-width:3.5}
+.mm .root circle{fill:var(--coral)}
+.mm .root text{fill:var(--on-accent);font-family:var(--display);font-weight:600;font-size:18px}
+.mm .root .rs{font-family:var(--body);font-size:11.5px;font-weight:500}
+.mm-hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.mm-detail{margin-top:14px}
+.mm-detail > h3{font-family:var(--display);font-size:22px;font-weight:600}
+.profiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.profile{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:10px;padding:14px 14px 12px}
+.profile h4{margin:0;font-size:15.5px}
+.profile .who2{font-size:12.5px;color:var(--muted);margin-top:2px}
+.profile .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--c);margin-top:10px}
+.profile p{margin:3px 0 0;font-size:14px;color:var(--fg)}
+.profile .quote{font-size:15px;margin-top:8px}
+
+/* phases */
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
+.phase{all:unset;box-sizing:border-box;cursor:pointer;border-radius:var(--r);padding:12px 12px;border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow)}
+.phase .label{color:var(--c)}
+.phase h3{font-family:var(--display);font-size:17px;margin:0;line-height:1.2}
+.phase small{color:var(--faint);font-size:12.5px;line-height:1.35}
+.phase:hover{border-color:var(--c)}
+.phase[aria-pressed="true"]{border-color:var(--c);background:var(--cs)}
+.phase:focus-visible{outline:2px solid var(--coral)}
+.ph-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.ph-detail h3{font-family:var(--display);font-size:24px;font-weight:600}
+.modlist{display:grid;gap:8px;margin-top:10px}
+.modlist div{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:8px 10px;border-radius:8px;background:var(--panel-2);font-size:14px;line-height:1.35}
+.modlist b{font-family:var(--mono);font-size:11px;color:var(--c);padding-top:2px}
+.modlist span{color:var(--fg)}
+.modlist small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.sell{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.4;margin-top:8px;color:var(--fg)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px}
+.stat{padding:16px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}
+.stat .v{font-family:var(--display);font-size:34px;font-weight:600;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.stat .v small{font-size:16px;color:var(--coral);margin-left:2px}
+.stat .k{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.35}
+.stat .src{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--faint);margin-top:6px;text-transform:uppercase}
+
+/* people */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.person{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:center;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.person:hover,.person[aria-pressed="true"]{border-color:var(--c)}
+.person:focus-visible{outline:2px solid var(--coral)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--cs);color:var(--c)}
+.person b{display:block;font-size:14px;line-height:1.2}
+.person small{color:var(--muted);font-size:12px;line-height:1.3;display:block}
+.person-note{margin-top:12px}
+
+/* calls */
+.calls{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cstep{all:unset;cursor:pointer;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);display:grid;gap:4px;align-content:start;min-height:64px}
+.cstep b{font-family:var(--mono);font-size:11px;color:var(--c)}
+.cstep span{font-size:14px;font-weight:500;line-height:1.25}
+.cstep[aria-pressed="true"]{border-color:var(--c);background:var(--cs)}
+.cstep:focus-visible{outline:2px solid var(--coral)}
+.cdetail{margin-top:14px}
+.bubbles{display:grid;gap:10px;margin-top:12px}
+.bub{max-width:82%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.45}
+.bub small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;opacity:.75}
+.bub.you{background:var(--violet-soft);color:var(--fg);border-bottom-left-radius:4px}
+.bub.them{background:var(--panel-2);color:var(--fg);margin-left:auto;border-bottom-right-radius:4px;border:1px solid var(--line)}
+.tip{margin-top:12px;font-size:14px;color:var(--muted)}
+.tip strong{color:var(--fg)}
+
+/* stories */
+.voices{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.tcard[hidden]{display:none}
+.trans{display:flex;align-items:center;gap:8px;font-size:13.5px;flex-wrap:wrap}
+.trans .arrow{color:var(--coral)}
+.who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:10px}
+
+/* probing */
+.probe{display:grid;gap:8px}
+.pq{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;cursor:pointer;align-items:start}
+.pq .n{font-family:var(--mono);font-size:11px;color:var(--coral);padding-top:3px}
+.pq .q{font-weight:500}
+.pq .why{display:none;color:var(--muted);font-size:14px;margin-top:6px}
+.pq[aria-expanded="true"]{border-color:var(--coral)}
+.pq[aria-expanded="true"] .why{display:block}
+.pq:focus-visible{outline:2px solid var(--coral)}
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.steps4 div{padding:10px 12px;border-radius:10px;background:var(--panel);border:1px solid var(--line);font-size:13.5px}
+.steps4 b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+
+/* share kit */
+.situations{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.sit{all:unset;box-sizing:border-box;cursor:pointer;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:14px;line-height:1.3}
+.sit .label{display:block;margin-bottom:4px;color:var(--c)}
+.sit:hover{border-color:var(--c)}
+.sit[aria-pressed="true"]{border-color:var(--c);background:var(--cs)}
+.sit:focus-visible{outline:2px solid var(--coral)}
+.links{display:grid;gap:8px}
+.lnk{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--fg)}
+.lnk:hover{border-color:var(--coral)}
+.lnk small{display:block;color:var(--muted);font-size:12.5px}
+.lnk .go{font-family:var(--mono);font-size:11px;color:var(--coral);white-space:nowrap}
+
+/* quiz */
+.qz{display:grid;gap:12px}
+.qz .card h3{font-size:16.5px;font-weight:500;line-height:1.4}
+.opts{display:grid;gap:6px;margin-top:10px}
+.opt{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-size:14.5px}
+.opt:hover{border-color:var(--violet)}
+.opt:focus-visible{outline:2px solid var(--coral)}
+.opt.right{border-color:var(--mint);background:var(--mint-soft)}
+.opt.wrong{border-color:var(--rose);background:var(--rose-soft)}
+.opt[disabled]{cursor:default}
+.explain{margin-top:8px;font-size:14px;color:var(--muted)}
+.scorebar{position:sticky;top:10px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:14px}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  nav.side{position:fixed;inset:0 auto 0 0;width:min(86vw,300px);z-index:20;transform:translateX(-100%);transition:transform .25s;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+  nav.side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.55)}
+  .topbar{display:flex;position:sticky;top:0;z-index:10;justify-content:space-between;align-items:center;gap:10px;margin:-34px calc(-1*clamp(16px,4vw,56px)) 18px;padding:10px clamp(16px,4vw,56px);background:var(--bg);border-bottom:1px solid var(--line)}
+  .menu-btn{all:unset;cursor:pointer;display:inline-flex;gap:8px;align-items:center;padding:7px 14px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:14px}
+  .persona,.ph-detail,.story,.loop-wrap,.venn-wrap{grid-template-columns:minmax(0,1fr)}
+  .g3,.g4,.steps4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stepper{grid-template-columns:repeat(var(--n,5),minmax(118px,1fr));overflow-x:auto}
+}
+@media (max-width:600px){
+  .g2,.g3,.g4,.steps4{grid-template-columns:minmax(0,1fr)}
+  .crow{grid-template-columns:minmax(0,1fr);gap:4px}
+  .bub{max-width:94%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+<nav class="side" id="side" aria-label="Training sections">
+  <div class="brand">
+    <img class="wm wm-l" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%2240%22%20viewBox%3D%220%200%20180%2040%22%3E%3Cg%20transform%3D%22translate(0%2C6)%20scale(.15)%22%3E%3Cpath%20fill%3D%22%236A3FD4%22%20d%3D%22M0%20188L104%200H176L72%20188Z%22%2F%3E%3Cpath%20fill%3D%22%238463D9%22%20d%3D%22M160%2070L210%200H298L214%20108Z%22%2F%3E%3Cpath%20fill%3D%22%235B3CB8%22%20d%3D%22M200%20120L238%2070L298%20188H246Z%22%2F%3E%3C%2Fg%3E%3Ctext%20x%3D%2252%22%20y%3D%2227%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2221%22%20font-weight%3D%22700%22%20fill%3D%22%231B1530%22%3EKestrel%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Kestrel Academy">
+    <img class="wm wm-d" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%2240%22%20viewBox%3D%220%200%20180%2040%22%3E%3Cg%20transform%3D%22translate(0%2C6)%20scale(.15)%22%3E%3Cpath%20fill%3D%22%236A3FD4%22%20d%3D%22M0%20188L104%200H176L72%20188Z%22%2F%3E%3Cpath%20fill%3D%22%238463D9%22%20d%3D%22M160%2070L210%200H298L214%20108Z%22%2F%3E%3Cpath%20fill%3D%22%235B3CB8%22%20d%3D%22M200%20120L238%2070L298%20188H246Z%22%2F%3E%3C%2Fg%3E%3Ctext%20x%3D%2252%22%20y%3D%2227%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2221%22%20font-weight%3D%22700%22%20fill%3D%22%23F3EEFF%22%3EKestrel%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Kestrel Academy">
+    <b>Data Science Playbook</b><small>Kestrel Academy · product training (demo)</small>
+  </div>
+  <div id="navmount"></div>
+  <div class="nav-foot"><button class="theme-btn" data-theme-toggle type="button"></button></div>
+</nav>
+
+<main id="main">
+<div class="topbar"><button class="menu-btn" id="menuBtn" aria-controls="side" aria-expanded="false">☰ <span>Sections</span></button><button class="theme-btn" data-theme-toggle type="button"></button></div>
+
+<!-- ================= PART 1 · THE STORY ================= -->
+
+<section class="page" id="meet" data-day="1" data-title="Meet Sam">
+  <div class="eyebrow"><span class="day">Part 1</span>· The story</div>
+  <h1>Meet Sam. <em>He's on your call list.</em></h1>
+  <p class="lead">Sam isn't a real learner. He's the kind of person who applies for the <strong>Data Science program</strong> every week. Follow him through this playbook: who he is, what he learns, and how your call with him goes.</p>
+  <div class="persona">
+    <div class="card">
+      <div class="label">Sam · operations analyst · 4 years · a logistics company</div>
+      <div class="diary t-violet" style="margin-top:14px">
+        <div><b>Monday</b><span>Copies numbers from five spreadsheets into one report, by hand.</span></div>
+        <div><b>Tuesday</b><span>Asks the data team for a query. It arrives on Friday.</span></div>
+        <div><b>Wednesday</b><span>Notices delivery delays spike every rainy week. Can't prove it.</span></div>
+        <div><b>Thursday</b><span>His manager asks for a forecast. He guesses.</span></div>
+        <div><b>Friday, 10 pm</b><span>Downloads the Data Science brochure and fills in the application.</span></div>
+      </div>
+    </div>
+    <div class="grid" style="align-content:start">
+      <div class="card t-coral tint"><div class="label">What he's feeling</div><p class="quote">"I know the answers are in the data. I just can't get them out."</p></div>
+      <div class="card t-mint tint"><div class="label">After 6 months</div><p>He writes his own queries, builds a dashboard his team uses every morning, and has a forecasting project on his portfolio.</p></div>
+    </div>
+  </div>
+
+  <h2>The program in one line</h2>
+  <div class="say"><div class="label">Say it like this</div><p>"In six months, alongside your job, you learn to ask data the right questions, answer them yourself, and show the results to people who decide."</p></div>
+  <div class="grid g3">
+    <div class="card t-coral tint"><div class="label">Who it's for</div><h3>People who work with numbers</h3><p>Analysts, ops, finance, marketing, engineers. Basic spreadsheet skills are enough to start.</p></div>
+    <div class="card t-violet tint"><div class="label">What they do</div><h3>Query → analyse → model → present</h3><p>Four phases, each ending with a project.</p></div>
+    <div class="card t-mint tint"><div class="label">Why it matters</div><h3>Decisions, not guesses</h3><p>The person their team asks, "what does the data say?"</p></div>
+  </div>
+</section>
+
+<section class="page" id="whynow" data-day="1" data-title="Why now" hidden>
+  <div class="eyebrow"><span class="day">Part 1</span>· The story</div>
+  <h1>Every team has data. <em>Few can read it.</em></h1>
+  <p class="lead">These numbers are made up for this demo. In a real playbook, each one would carry a source you can name.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">8<small>/10</small></div><div class="k">managers say they want more decisions backed by data</div><div class="src">Illustrative</div></div>
+    <div class="stat"><div class="v">3<small>×</small></div><div class="k">more data-skill job posts than five years ago</div><div class="src">Illustrative</div></div>
+    <div class="stat"><div class="v">40<small>%</small></div><div class="k">of an analyst's week spent cleaning data by hand</div><div class="src">Illustrative</div></div>
+    <div class="stat"><div class="v">6<small>mo</small></div><div class="k">from first query to a portfolio project</div><div class="src">Kestrel program</div></div>
+  </div>
+  <div class="say"><div class="label">The one line to remember</div><p>"The data is already there. The skill is getting the answer out."</p></div>
+  <h2>Why people join: catch up, step up or switch</h2>
+  <div class="grid g3">
+    <div class="card t-rose tint"><div class="label">1 · Catch up</div><h3>Stop waiting on others</h3><p>They're tired of queuing for the data team.</p></div>
+    <div class="card t-violet tint"><div class="label">2 · Step up</div><h3>Own the numbers</h3><p>They want the promotion that comes with owning a metric.</p></div>
+    <div class="card t-mint tint"><div class="label">3 · Switch</div><h3>A new career</h3><p>They want a data role, full stop.</p></div>
+  </div>
+</section>
+
+<section class="page" id="idea" data-day="1" data-title="Data science in plain words" hidden>
+  <div class="eyebrow"><span class="day">Part 1</span>· The story</div>
+  <h1>Questions in, <em>answers out</em></h1>
+  <p class="lead">You don't need the maths. You need to explain what data science <strong>does</strong>, simply enough that Sam says "oh, I get it."</p>
+  <h2>Spreadsheets vs data science</h2>
+  <div class="seg" role="group" aria-label="Choose" data-seg="gen"><button aria-pressed="true" data-k="a">Spreadsheets</button><button aria-pressed="false" data-k="b">Data science</button></div>
+  <div class="compare-rows" id="genRows"></div>
+  <p class="metaphor" id="genMeta"></p>
+  <h2>Six things data does at work</h2>
+  <p class="muted">Select a skill to see what it does, where the program teaches it, and what prospects say when they need it.</p>
+  <div class="loop-wrap"><div class="loop" id="aiworkLoop"></div><div class="card stage-panel" id="aiworkPanel"></div></div>
+</section>
+
+<section class="page" id="tg" data-day="1" data-title="Who you'll talk to" hidden>
+  <div class="eyebrow"><span class="day">Part 1</span>· The story</div>
+  <h1>Not just Sam. <em>Three kinds of people.</em></h1>
+  <p class="lead">Select a branch to see each profile's <strong>pain points, their own words, and how to pitch it</strong>.</p>
+  <div class="mm-wrap"><svg class="mm" id="mm" viewBox="0 0 1000 560" role="img" aria-label="Map of target groups"></svg></div>
+  <p class="mm-hint">Select a branch on the map, or use the buttons below.</p>
+  <div class="card mm-detail" id="mmDetail"></div>
+</section>
+
+<section class="page" id="words" data-day="1" data-title="Words you'll hear" hidden>
+  <div class="eyebrow"><span class="day">Part 1</span>· The story</div>
+  <h1>Ten words, <em>in plain English</em></h1>
+  <p class="lead">Read the word, explain it out loud as if Sam asked, then flip to check.</p>
+  <div class="deck-bar"><span class="counter" id="termCount"></span><div class="chips"><button class="btn" id="termPrev">← Prev</button><button class="btn" id="termShuffle">Shuffle</button><button class="btn" id="termNext">Next →</button></div></div>
+  <div class="single" id="termDeck"></div>
+</section>
+
+<!-- ================= PART 2 · THE PROGRAM ================= -->
+
+<section class="page" id="glance" data-day="2" data-title="At a glance" hidden>
+  <div class="eyebrow"><span class="day">Part 2</span>· The program</div>
+  <h1>Everything Sam will ask, <em>on one page</em></h1>
+  <p class="lead">Keep this open on every call. (Demo facts, made up.)</p>
+  <div class="stats">
+    <div class="stat"><div class="v">6<small>mo</small></div><div class="k">Live, on weekday evenings</div></div>
+    <div class="stat"><div class="v">8</div><div class="k">Hours a week, including live sessions</div></div>
+    <div class="stat"><div class="v">40</div><div class="k">Learners per cohort</div></div>
+    <div class="stat"><div class="v">2</div><div class="k">Portfolio projects, plus weekly labs</div></div>
+  </div>
+  <h2>A normal week</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>When</th><th>Time</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td>Tuesday</td><td class="num">7 – 9 pm</td><td>Live class with a mentor</td></tr>
+      <tr><td>Thursday</td><td class="num">7 – 9 pm</td><td>Live lab: build it together</td></tr>
+      <tr><td>Weekend</td><td>Their own time</td><td>The week's project, with feedback</td></tr>
+    </tbody></table></div>
+  <h2>Fee</h2>
+  <div class="grid g3">
+    <div class="card t-coral tint"><div class="label">Program fee</div><div class="stat" style="border:0;padding:6px 0 0;background:none;box-shadow:none"><div class="v">$2,400</div></div></div>
+    <div class="card"><div class="label">Payment plans</div><h3 style="margin-top:6px">3, 6 or 12 months</h3><p>Interest-free.</p></div>
+    <div class="card t-mint tint"><div class="label">Can their company pay?</div><p>Often, yes. We provide an invoice and a certificate.</p></div>
+  </div>
+  <div class="callout"><div class="ic">!</div><p><strong>Never offer a discount on the call.</strong> Check with your lead first.</p></div>
+</section>
+
+<section class="page" id="journey" data-day="2" data-title="The 6 months" hidden>
+  <div class="eyebrow"><span class="day">Part 2</span>· The program</div>
+  <h1>Query, analyse, <em>model, present</em></h1>
+  <p class="lead">Four phases. Select a phase to see what Sam does in it and <strong>the line to use on a call</strong>.</p>
+  <div class="road" id="road"></div>
+  <div class="ph-detail" id="phDetail"></div>
+</section>
+
+<section class="page" id="projects" data-day="2" data-title="What they build" hidden>
+  <div class="eyebrow"><span class="day">Part 2</span>· The program</div>
+  <h1>Every phase ends with <em>something real</em></h1>
+  <p class="lead">Flip a card for the story, then <strong>pick the one closest to your prospect's job</strong>.</p>
+  <div class="deck-bar"><div class="chips" id="projFilter"></div><button class="btn" data-flipall="projGrid">Flip all</button></div>
+  <div class="fgrid tall" id="projGrid"></div>
+</section>
+
+<section class="page" id="mentors" data-day="2" data-title="Mentors & why us" hidden>
+  <div class="eyebrow"><span class="day">Part 2</span>· The program</div>
+  <h1>Taught by people who <em>do this every day</em></h1>
+  <p class="lead">Pick the mentor closest to your prospect's world. (Fictional people.)</p>
+  <div class="people" id="people"></div>
+  <div class="card person-note" id="personNote"></div>
+  <h2>Why Kestrel, in four lines</h2>
+  <div class="grid g2">
+    <div class="card t-coral tint"><div class="label">Keep your job</div><h3>Evenings only</h3><p class="quote">"You keep your job and your income."</p></div>
+    <div class="card t-violet tint"><div class="label">Real proof</div><h3>Build, don't just watch</h3><p class="quote" style="--c:var(--violet)">"You leave with a portfolio, not just a certificate."</p></div>
+    <div class="card t-mint tint"><div class="label">Small cohorts</div><h3>40 learners</h3><p class="quote" style="--c:var(--mint)">"Your mentor knows your project by name."</p></div>
+    <div class="card t-amber tint"><div class="label">Network</div><h3>Alumni in 300+ companies</h3><p class="quote" style="--c:var(--amber)">"Someone has already done the job you want."</p></div>
+  </div>
+</section>
+
+<section class="page" id="outcomes" data-day="2" data-title="What they leave with" hidden>
+  <div class="eyebrow"><span class="day">Part 2</span>· The program</div>
+  <h1>The outcome is <em>a portfolio</em></h1>
+  <p class="lead">Never promise a job or a salary. The honest promise: real skills, and the projects to prove them.</p>
+  <h2>Sam's 6 months, step by step</h2>
+  <div class="stepper" role="tablist" id="weeksStepper"></div>
+  <div class="story" id="weeksStory"></div>
+  <h2>What learners say</h2>
+  <div class="chips" id="voiceFilter" style="margin-bottom:14px"></div>
+  <div class="voices" id="voiceGrid"></div>
+</section>
+
+<!-- ================= PART 3 · THE CALL ================= -->
+
+<section class="page" id="call" data-day="3" data-title="A call with Sam" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· The call</div>
+  <h1>Your call with Sam, <em>start to finish</em></h1>
+  <p class="lead">Pre-sales (Qualifier) finds out if he's a fit and books the next call. Full-sales (Advisor) walks him through the program. Switch roles, then step through the conversation.</p>
+  <div class="seg" role="group" aria-label="Choose role" data-seg="call"><button aria-pressed="true" data-k="pre">Pre-sales · Qualifier</button><button aria-pressed="false" data-k="full">Full-sales · Advisor</button></div>
+  <div class="calls" id="calls"></div>
+  <div class="card cdetail" id="cdetail"></div>
+  <p class="small muted">A guide, not a script. Use your own words.</p>
+</section>
+
+<section class="page" id="questions" data-day="3" data-title="Questions to ask" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· The call</div>
+  <h1>Ask, listen, <em>then talk</em></h1>
+  <p class="lead">Select a question to see <strong>why you ask it and what to listen for</strong>.</p>
+  <div class="probe" id="probe"></div>
+  <h2>Is he a fit? BANT</h2>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+    <div class="card"><div class="label">B · Budget</div><p style="color:var(--fg)">"Have you invested in learning before?"</p></div>
+    <div class="card"><div class="label">A · Authority</div><p style="color:var(--fg)">"Is anyone else part of this decision?"</p></div>
+    <div class="card"><div class="label">N · Need</div><p style="color:var(--fg)">"What do you want to be different after this?"</p></div>
+    <div class="card"><div class="label">T · Timing</div><p style="color:var(--fg)">"When would you want to start?"</p></div>
+  </div>
+</section>
+
+<section class="page" id="pushback" data-day="3" data-title="When they push back" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· The call</div>
+  <h1>A worry isn't a no. <em>Silence is.</em></h1>
+  <p class="lead">Answer in four steps, then flip a card to compare with a good answer.</p>
+  <div class="steps4"><div><b>1 · Agree</b>"That's fair."</div><div><b>2 · Ask</b>Find the real worry.</div><div><b>3 · Answer</b>With a fact or a story.</div><div><b>4 · Check</b>"Does that help?"</div></div>
+  <div class="deck-bar"><span class="counter" id="rebCount"></span><div class="chips"><button class="btn" id="rebPrev">← Prev</button><button class="btn" id="rebShuffle">Shuffle</button><button class="btn" id="rebNext">Next →</button></div></div>
+  <div class="single" id="rebDeck"></div>
+</section>
+
+<section class="page" id="competition" data-day="3" data-title="Know the competition" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· The call</div>
+  <h1>Know them. <em>Never knock them.</em></h1>
+  <p class="lead">Respect other programs, ask what they liked, then compare on facts.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>What they'll compare</th><th>Kestrel Data Science</th><th>Typical alternative</th></tr></thead>
+    <tbody>
+      <tr><td>Format</td><td>Live cohort, evenings, 6 months</td><td>Recorded videos</td></tr>
+      <tr><td>What they leave with</td><td>Two portfolio projects</td><td>A certificate for watching</td></tr>
+      <tr><td>Who teaches</td><td>Working data scientists</td><td>Often full-time trainers</td></tr>
+      <tr><td>Class size</td><td>40</td><td>Hundreds</td></tr>
+    </tbody></table></div>
+</section>
+
+<section class="page" id="share" data-day="3" data-title="What to send" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· The call</div>
+  <h1>The right link, <em>at the right moment</em></h1>
+  <p class="lead">Pick what the prospect just said, and send the matching link after the call. (Demo links go to example.com.)</p>
+  <div class="situations" id="sits"></div>
+  <div class="card" id="sitOut" style="margin-top:14px"></div>
+</section>
+
+<section class="page" id="quiz" data-day="3" data-title="Quick check" hidden>
+  <div class="eyebrow"><span class="day">Part 3</span>· Self-check</div>
+  <h1>Ready to <em>call Sam?</em></h1>
+  <p class="lead">Questions prospects actually ask. Pick an answer to see why. Nothing is recorded.</p>
+  <div class="scorebar"><span class="counter" id="qzScore"></span><button class="btn" id="qzReset">Start again</button></div>
+  <div class="qz" id="qz"></div>
+</section>
+
+</main>
+</div>
+
+<script>
+const PB={
+  key: "data",
+  persona: "Sam",
+  parts: [["1", "Part 1 · The story"], ["2", "Part 2 · The program"], ["3", "Part 3 · The call"]],
+  compares: {
+    gen: {
+      rows: [
+        ["How you use it", "Copy, paste and eyeball", "Ask a question in code, get an answer you can repeat"],
+        ["How big it gets", "Slows down after a few thousand rows", "Millions of rows, no problem"],
+        ["What you learn", "What happened", "Why it happened, and what happens next"],
+        ["Who trusts it", "Whoever built the sheet", "Anyone who can rerun it"]
+      ],
+      meta: { a: "A spreadsheet is a notebook: great for jotting things down, hard to share and check.", b: "Data science is a lab: every step is written down, so anyone can repeat the experiment." }
+    }
+  },
+  stories: {
+    weeks: [
+      { k: "Months 1–2", s: "Query", a: "Sam learns to pull exactly the rows he needs, without waiting on anyone.", b: "His Monday report now takes ten minutes.", chip: "Phase 1 · Data foundations" },
+      { k: "Months 3–4", s: "Analyse", a: "He finds the pattern behind the rainy-week delays, and proves it.", b: "His manager shares the chart with the whole region.", chip: "Phase 2 · Analysis" },
+      { k: "Month 5", s: "Model", a: "He builds a simple forecast for next month's volume.", b: "No more guessing in planning meetings.", chip: "Phase 3 · Modelling" },
+      { k: "Month 6", s: "Present", a: "He turns it into a dashboard and presents it at Demo Night.", b: "Two other teams ask for one.", chip: "Phase 4 · Storytelling" }
+    ]
+  },
+  cycles: {
+    aiwork: {
+      center: "Six things data does at work", label: "Skill",
+      nodes: [
+        { n: "Reporting", t: "coral", a: "The same report, every week, built automatically.", bl: "Where they learn it", b: "Phase 1: SQL and spreadsheets done right", q: "\"I spend Mondays copying numbers.\"", go: "journey" },
+        { n: "Finding why", t: "violet", a: "Spot the pattern behind a problem, and prove it.", bl: "Where they learn it", b: "Phase 2: exploratory analysis", q: "\"I know something's off, I can't show it.\"", go: "journey" },
+        { n: "Forecasting", t: "mint", a: "Estimate next month from the last twelve.", bl: "Where they learn it", b: "Phase 3: simple models", q: "\"My manager wants a forecast and I guess.\"", go: "journey" },
+        { n: "Testing", t: "amber", a: "Check whether a change actually worked.", bl: "Where they learn it", b: "Phase 2: experiments", q: "\"We changed the process. Did it help?\"", go: "journey" },
+        { n: "Dashboards", t: "rose", a: "One page the whole team checks every morning.", bl: "Where they learn it", b: "Phase 4: dashboards", q: "\"Everyone asks me for the same numbers.\"", go: "journey" },
+        { n: "Storytelling", t: "coral", a: "Turn a chart into a decision.", bl: "Where they learn it", b: "Phase 4: presenting", q: "\"Nobody reads my reports.\"", go: "journey" }
+      ]
+    }
+  },
+  tgmap: {
+    root: "Data",
+    groups: [
+      { title: "Number-heavy jobs", sub: "Want answers faster", t: "coral", x: 300, y: 280, lx: 100, leaves: ["Analysts", "Operations", "Finance", "Marketing"], members: [0, 1, 2, 3],
+        h: "Good at their job, slowed down by manual work", intro: "The biggest branch. They already live in spreadsheets. Mostly <strong>Catch up</strong> and <strong>Step up</strong>.", call: "ask about their Monday, then describe it back to them." },
+      { title: "Career switchers", sub: "Want a data role", t: "violet", x: 700, y: 150, lx: 900, leaves: ["Teachers", "Researchers"], members: [4, 5],
+        h: "Ready for a new career", intro: "They want the job title. Be honest about the work it takes.", call: "check they can give 8 hours a week for six months." },
+      { title: "Builders", sub: "Want data in their product", t: "mint", x: 700, y: 410, lx: 900, leaves: ["Engineers", "Product managers"], members: [6, 7],
+        h: "Technical, missing the stats", intro: "They can code. They want to make better decisions with what they build.", call: "skip the basics and talk about the projects." }
+    ]
+  },
+  tg: [
+    { n: "Analysts", tag: "High priority", who: "Business, ops and reporting analysts", q: "I live in spreadsheets and I'm hitting the ceiling.", pain: "Manual reports, slow answers.", want: "To answer their own questions.", say: "\"You already think in data. We give you the tools.\"", t: "coral" },
+    { n: "Operations", tag: "High priority", who: "Ops leads and coordinators", q: "Something's always late and I can't say why.", pain: "Problems they can see but can't prove.", want: "To fix the cause, not the symptom.", say: "\"Find the why, then show it.\"", t: "violet" },
+    { n: "Finance", tag: "Good fit", who: "Accountants and finance analysts", q: "Forecasts are mostly gut feel.", pain: "Guesswork in planning.", want: "Numbers they can defend.", say: "\"Forecasts you can explain.\"", t: "mint" },
+    { n: "Marketing", tag: "Good fit", who: "Growth and campaign managers", q: "Did the campaign work? Nobody knows.", pain: "No way to measure.", want: "To prove what works.", say: "\"Know which campaign actually worked.\"", t: "amber" },
+    { n: "Teachers", tag: "Check time", who: "Teachers moving into data", q: "I'm good with numbers and want a change.", want: "A new career with growth.", say: "\"Your patience with messy problems is the job.\"", t: "rose" },
+    { n: "Researchers", tag: "Good fit", who: "Academic or market researchers", q: "I know the stats, not the tools.", want: "Industry tools and a portfolio.", say: "\"Same rigour, faster tools.\"", t: "coral" },
+    { n: "Engineers", tag: "Good fit", who: "Software engineers", q: "I build it, but I don't know if it works.", want: "To measure what they ship.", say: "\"Ship it, then prove it.\"", t: "violet" },
+    { n: "Product managers", tag: "Good fit", who: "PMs and product analysts", q: "I wait on the data team for every question.", want: "Self-serve answers.", say: "\"Ask and answer in the same afternoon.\"", t: "mint" }
+  ],
+  terms: [
+    ["Dataset", "A table of information: rows are things, columns are facts about them.", "\"Like a spreadsheet, but bigger and tidier.\""],
+    ["SQL", "The language for asking a database a question.", "\"How you ask the data a question.\""],
+    ["Python", "A programming language data people use for analysis.", "\"The Swiss army knife of data.\""],
+    ["Dashboard", "A page of charts that updates itself.", "\"The team's morning newspaper.\""],
+    ["Forecast", "An estimate of what comes next, based on what happened before.", "\"A weather report for your numbers.\""],
+    ["A/B test", "Comparing two versions to see which works better.", "\"A fair race between two ideas.\""],
+    ["Model", "A set of rules learned from data to make predictions.", "\"A recipe the data wrote.\""],
+    ["Outlier", "A value far away from the rest.", "\"The one that doesn't fit.\""],
+    ["Correlation", "Two things that move together.", "\"They move together, but one may not cause the other.\""],
+    ["Data cleaning", "Fixing typos, gaps and duplicates before analysis.", "\"Washing the vegetables before cooking.\""]
+  ],
+  phases: [
+    { t: "coral", label: "Phase 1 · Months 1–2", h: "Data foundations", short: "Ask the data", sub: "Pull exactly what you need.", mods: [["M01", "Spreadsheets done right", "Clean, structured, repeatable"], ["M02", "SQL", "Asking a database a question"]], end: "They stop waiting on others for numbers.", say: "\"In two months, you'll write the queries you used to wait for.\"", proj: "Weekly report automation" },
+    { t: "violet", label: "Phase 2 · Months 3–4", h: "Analysis", short: "Find the why", sub: "Patterns, causes and experiments.", mods: [["M03", "Python for analysis", "Tables, charts, summaries"], ["M04", "Experiments", "Did the change work?"]], end: "They can prove what they suspected.", say: "\"You'll find the why, and show it in one chart.\"", proj: "Root-cause analysis" },
+    { t: "mint", label: "Phase 3 · Month 5", h: "Modelling", short: "Predict", sub: "Simple, explainable models.", mods: [["M05", "Forecasting", "Next month from the last twelve"]], end: "They forecast instead of guessing.", say: "\"Planning meetings get a lot shorter.\"", proj: "Demand forecast" },
+    { t: "amber", label: "Phase 4 · Month 6", h: "Storytelling", short: "Present", sub: "Dashboards and decisions.", mods: [["M06", "Dashboards", "One page everyone uses"], ["M07", "Presenting data", "From chart to decision"]], end: "They present at Demo Night.", say: "\"You finish by showing your work to people who hire.\"", proj: "Capstone dashboard" }
+  ],
+  projectFilters: [["all", "All"], ["beginner", "Beginner"], ["intermediate", "Intermediate"], ["capstone", "Capstone"]],
+  projects: [
+    { n: "Weekly Report Bot", tag: "Beginner", f: "beginner", t: "mint", story: "A report that builds itself every Monday.", say: "\"Get your Mondays back.\"", skills: ["SQL", "Sheets"] },
+    { n: "Sales Explorer", tag: "Beginner", f: "beginner", t: "coral", story: "Slice a year of sales by region and product in seconds.", say: "\"Answer the question before the meeting ends.\"", skills: ["SQL"] },
+    { n: "Delay Detective", tag: "Intermediate", f: "intermediate", t: "violet", story: "Find out what really causes delivery delays.", say: "\"Prove the pattern you've noticed.\"", skills: ["Python", "Charts"] },
+    { n: "Campaign Checker", tag: "Intermediate", f: "intermediate", t: "amber", story: "An A/B test that says which email actually worked.", say: "\"Stop arguing, start testing.\"", skills: ["Python", "Statistics"] },
+    { n: "Volume Forecast", tag: "Intermediate", f: "intermediate", t: "rose", story: "Next month's orders, from the last two years.", say: "\"Plan with numbers, not gut feel.\"", skills: ["Python", "Forecasting"] },
+    { n: "Team Dashboard", tag: "Capstone", f: "capstone", t: "coral", story: "One page their whole team checks every morning, presented at Demo Night.", say: "\"Build the thing everyone uses.\"", skills: ["SQL", "Python", "Dashboards"] }
+  ],
+  people: [
+    ["Rina Okoye", "Senior Data Scientist · a ride-share company", "Builds pricing models. Good for engineers and analysts.", "coral"],
+    ["Felix Brandt", "Analytics Lead · a retail chain", "Runs a team of twelve analysts. Good for ops and finance.", "violet"],
+    ["Mei Tanaka", "Data PM · a fintech startup", "Turns data into product decisions. Good for PMs.", "mint"],
+    ["Carlos Vega", "Head of Insights · a media company", "Measures what campaigns really do. Good for marketers.", "amber"]
+  ],
+  voiceFilters: [["all", "All"], ["ops", "Ops & finance"], ["tech", "Tech"], ["switch", "Switchers"]],
+  voices: [
+    { f: "ops", n: "Dana R.", role: "Ops analyst", q: "My Monday report used to take four hours. Now it takes four minutes." },
+    { f: "ops", n: "Victor L.", role: "Finance analyst", q: "I finally have forecasts I can defend in a meeting." },
+    { f: "tech", n: "Priya S.", role: "Backend engineer", q: "I now measure everything I ship." },
+    { f: "switch", n: "Tom W.", role: "Former teacher, now junior analyst", q: "The projects got me the interview. The mentor got me ready for it." }
+  ],
+  calls: {
+    pre: [
+      { s: "Hello", goal: "Earn the next 2 minutes", lines: [["you", "Hi, is this Sam? This is Maya from Kestrel Academy. You applied for our Data Science program on Friday. Is now a good time for 10 minutes?"], ["them", "Yes, go ahead."]], tip: "Always ask if it's a good time.", go: "" },
+      { s: "His work", goal: "Understand his week", lines: [["you", "Walk me through a normal week. Where does the data come in?"], ["them", "Mostly reports. Lots of copy and paste."]], tip: "Listen for repetitive tasks.", go: "questions" },
+      { s: "Fit check", goal: "BANT", lines: [["you", "If this goes well, when would you want to start? And is anyone else part of the decision?"], ["them", "Next month, ideally. It's just me."]], tip: "Ask budget while talking outcomes, not first.", go: "questions" },
+      { s: "Book the call", goal: "Hand off with a hook", lines: [["you", "I'd like you to speak with Priya, one of our senior advisors. Tomorrow at 6 or Thursday at 7?"], ["them", "Thursday works."]], tip: "Two specific times. Never \"when are you free?\"", go: "share" }
+    ],
+    full: [
+      { s: "Reconnect", goal: "Pick up where pre-sales left off", lines: [["you", "Hi Sam, it's Priya. Maya told me about your Monday reports. Did you get a look at the brochure?"], ["them", "I did. The projects looked useful."]], tip: "Start from his story. He should feel remembered.", go: "" },
+      { s: "His 6 months", goal: "Map the program to him", lines: [["you", "Month one, you automate that Monday report. By month four, you're proving what causes the delays."], ["them", "That's exactly my problem."]], tip: "Use his words, not the brochure's.", go: "journey" },
+      { s: "Fee", goal: "Facts, then plans", lines: [["you", "It's $2,400, or interest-free over 3, 6 or 12 months. Many companies cover it."], ["them", "I'll ask my manager."]], tip: "Offer to help write the request.", go: "glance" },
+      { s: "Close", goal: "A clear next step", lines: [["you", "The next cohort starts on the 3rd. Shall I hold a seat while you speak to your manager?"], ["them", "Yes, please."]], tip: "A dated next step, every time.", go: "glance" }
+    ]
+  },
+  probe: [
+    ["\"Walk me through a normal week at work.\"", "Listen for repetitive tasks. Each one is a pain you can solve later."],
+    ["\"Where do the numbers you use come from?\"", "Tells you their tools and how manual it is."],
+    ["\"What question do you wish you could answer?\"", "This is the hook for the whole pitch."],
+    ["\"What have you tried so far?\"", "Shows commitment, and what didn't work for them."],
+    ["\"What would be different in six months?\"", "Their own success picture. Use it when you close."]
+  ],
+  reb: [
+    ["\"It's too expensive.\"", "Ask what they're comparing it to. Then: live classes, two portfolio projects, small cohorts and interest-free plans.", "\"If it gives you back four hours a week, is it still expensive?\""],
+    ["\"I don't have time.\"", "Ask what a normal week looks like. Eight hours, two evenings live, recordings if they miss one.", "\"Two evenings a week, for six months, to change the next ten years.\""],
+    ["\"I'll learn it free on YouTube.\"", "Agree the content exists. What's missing is structure, feedback and a cohort.", "\"Videos teach. Mentors and deadlines make you finish.\""],
+    ["\"I'm not good at maths.\"", "Ask what they do with numbers now. The program starts from spreadsheets.", "\"If you can build a pivot table, you can start here.\""],
+    ["\"Will I get a job?\"", "Never promise one. Explain the portfolio, interview prep and partner referrals.", "\"We can't promise a job. We can make you ready for one.\""]
+  ],
+  links: {
+    brochure: ["Data Science brochure", "example.com/kestrel/brochure", "https://example.com/kestrel/brochure"],
+    projects: ["Project gallery", "example.com/kestrel/projects", "https://example.com/kestrel/projects"],
+    demo: ["Demo class", "Video", "https://example.com/kestrel/demo-class"],
+    v1: ["Dana's story", "Video", "https://example.com/kestrel/story-1"],
+    v2: ["Victor's story", "Video", "https://example.com/kestrel/story-2"],
+    v3: ["Tom's story", "Video", "https://example.com/kestrel/story-3"],
+    site: ["Program page", "example.com/kestrel · curriculum, mentors, FAQs", "https://example.com/kestrel"],
+    apply: ["Apply", "example.com/kestrel/apply", "https://example.com/kestrel/apply"]
+  },
+  sits: [
+    ["General", "\"Send me the details.\"", ["brochure", "site"], "Start with the brochure. Follow up the next day: ask which part interested them most."],
+    ["Projects", "\"What would I actually build?\"", ["projects"], "Send the gallery and point at the one closest to their job."],
+    ["Teaching", "\"What are classes like?\"", ["demo"], "Send the demo class. Ask what they thought of the mentor."],
+    ["Proof", "\"Does it work for people like me?\"", ["v1", "v2", "v3"], "Pick the story closest to them. One is better than three."],
+    ["Ready", "\"How do I sign up?\"", ["apply"], "Send it straight away, and stay on the line while they open it."]
+  ],
+  quiz: [
+    ["Sam asks how long the program is.", ["8 weeks", "3 months", "6 months", "1 year"], 2, "Six months: four phases."],
+    ["How many hours a week does it take?", ["2", "About 8", "20", "40"], 1, "About eight hours, including two live evenings."],
+    ["How big is a cohort?", ["10", "40", "400", "Unlimited"], 1, "40 learners, on purpose."],
+    ["Sam asks if a job is guaranteed.", ["Yes", "No, but we prepare you and refer you", "Only with full payment", "Change the subject"], 1, "Never promise a job."],
+    ["Which framework checks fit?", ["FAB", "BANT", "SWOT", "OKR"], 1, "BANT: Budget, Authority, Need, Timing."]
+  ]
+};
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const on=(id,fn)=>{const el=document.getElementById(id);if(el)fn(el)};
+
+/* ---------- theme ---------- */
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+function paintTheme(){const t=document.documentElement.getAttribute("data-theme");$$("[data-theme-toggle]").forEach(b=>{b.innerHTML=t==="dark"?SUN+"<span>Light mode</span>":MOON+"<span>Dark mode</span>";b.setAttribute("aria-label",t==="dark"?"Switch to light mode":"Switch to dark mode")})}
+$$("[data-theme-toggle]").forEach(b=>b.addEventListener("click",()=>{const t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("pb-theme",t)}catch(e){}paintTheme()}));
+paintTheme();
+
+/* ---------- navigation ---------- */
+const pages=$$(".page");
+function buildNav(){
+  let html="",n=0;
+  PB.parts.forEach(([d,label])=>{
+    const ps=pages.filter(p=>p.dataset.day===d);if(!ps.length)return;
+    html+=`<div class="navgroup"><span>${label}</span><span>${ps.length}</span></div><ul class="navlist">`;
+    ps.forEach(p=>{n++;html+=`<li><button data-go="${p.id}"><span class="n">${String(n).padStart(2,"0")}</span><span>${esc(p.dataset.title)}</span></button></li>`});
+    html+="</ul>";
+  });
+  $("#navmount").innerHTML=html;
+  pages.forEach((p,i)=>{
+    const prev=pages[i-1],next=pages[i+1];
+    const d=document.createElement("div");d.className="pager";
+    d.innerHTML=`<button class="prev" ${prev?`data-go="${prev.id}"`:"hidden"}><span class="dir">← Previous</span><span class="ttl">${prev?esc(prev.dataset.title):""}</span></button><button class="next" ${next?`data-go="${next.id}"`:"hidden"}><span class="dir">Next →</span><span class="ttl">${next?esc(next.dataset.title):""}</span></button>`;
+    p.appendChild(d);
+  });
+}
+function show(id,push){
+  const p=pages.find(x=>x.id===id)||pages[0];
+  pages.forEach(x=>x.hidden=x!==p);
+  $$(".navlist button").forEach(b=>{if(b.dataset.go===p.id)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  if(push!==false){try{history.replaceState(null,"","#"+p.id)}catch(e){}}
+  try{localStorage.setItem(PB.key+"-page",p.id)}catch(e){}
+  window.scrollTo({top:0});
+  $("#side").classList.remove("open");$("#menuBtn").setAttribute("aria-expanded","false");
+}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.preventDefault();show(g.dataset.go)}});
+$("#menuBtn").addEventListener("click",()=>{const o=$("#side").classList.toggle("open");$("#menuBtn").setAttribute("aria-expanded",o)});
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("input,textarea"))return;
+  const i=pages.findIndex(p=>!p.hidden);
+  if(e.key==="ArrowRight"&&e.altKey&&pages[i+1])show(pages[i+1].id);
+  if(e.key==="ArrowLeft"&&e.altKey&&pages[i-1])show(pages[i-1].id);
+});
+
+/* ---------- helpers ---------- */
+function seg(name,fn){
+  const g=$(`[data-seg="${name}"]`);if(!g)return;const bs=$$("button",g);
+  const pick=k=>{bs.forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));fn(k)};
+  bs.forEach(b=>b.onclick=()=>pick(b.dataset.k));pick(bs[0].dataset.k);
+}
+function flipCard(front,back,tone,attrs){
+  return `<div class="flip ${tone||""}" tabindex="0" role="button" aria-label="Flip card" ${attrs||""}><div class="in"><div class="face front">${front}<div class="hint">Tap to flip</div></div><div class="face back">${back}</div></div></div>`;
+}
+document.addEventListener("click",e=>{const f=e.target.closest(".flip");if(f&&!e.target.closest("a"))f.classList.toggle("on")});
+document.addEventListener("keydown",e=>{const f=e.target.closest&&e.target.closest(".flip");if(f&&(e.key==="Enter"||e.key===" ")){e.preventDefault();f.classList.toggle("on")}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-flipall]");if(!b)return;const cards=$$(".flip:not([hidden])",$("#"+b.dataset.flipall));const allOn=cards.every(c=>c.classList.contains("on"));cards.forEach(c=>c.classList.toggle("on",!allOn));b.textContent=allOn?"Flip back":"Flip all"});
+function deck(id,countId,items,render,prev,next,shuffle){
+  let order=items.map((_,i)=>i),idx=0;
+  const draw=()=>{$("#"+id).innerHTML=render(items[order[idx]],order[idx]);$("#"+countId).textContent=`${idx+1} / ${items.length}`};
+  $("#"+next).onclick=()=>{idx=(idx+1)%items.length;draw()};
+  $("#"+prev).onclick=()=>{idx=(idx-1+items.length)%items.length;draw()};
+  if(shuffle&&$("#"+shuffle))$("#"+shuffle).onclick=()=>{for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}idx=0;draw()};
+  draw();
+}
+function filterChips(barId,items,attr,onPick){
+  $("#"+barId).innerHTML=items.map((f,i)=>`<button class="btn" aria-pressed="${i===0}" data-f="${f[0]}">${f[1]}</button>`).join("");
+  $$("#"+barId+" [data-f]").forEach(b=>b.onclick=()=>{$$("#"+barId+" [data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b));onPick(b.dataset.f)});
+}
+
+/* ---------- compare toggles ---------- */
+Object.entries(PB.compares||{}).forEach(([name,c])=>{
+  seg(name,k=>{const j=k==="a"?1:2;$("#"+name+"Rows").innerHTML=c.rows.map(r=>`<div class="crow"><div class="k">${r[0]}</div><div class="v">${r[j]}</div></div>`).join("");const m=$("#"+name+"Meta");m.innerHTML=c.meta[k];m.style.color=k==="b"?"var(--coral)":"var(--violet)"});
+});
+
+/* ---------- story steppers ---------- */
+Object.entries(PB.stories||{}).forEach(([name,steps])=>{
+  const st=$("#"+name+"Stepper");if(!st)return;st.style.setProperty("--n",steps.length);
+  st.innerHTML=steps.map((s,i)=>`<button role="tab" aria-selected="false"><span class="label">${s.k||"Step "+(i+1)}</span>${s.s}</button>`).join("");
+  const draw=i=>{$$("button",st).forEach((b,j)=>b.setAttribute("aria-selected",j===i));const s=steps[i];
+    $("#"+name+"Story").innerHTML=`<div class="card"><div class="label">${s.l1||"What happens"}</div><p class="big">${s.a}</p></div><div class="card t-coral tint"><div class="label">${s.l2||"Why it matters"}</div><p class="big" style="color:var(--fg)">${s.b}</p>${s.chip?`<p class="small" style="margin-top:10px"><span class="chip">${s.chip}</span></p>`:""}</div>`};
+  $$("button",st).forEach((b,i)=>b.onclick=()=>draw(i));draw(0);
+});
+
+/* ---------- target groups ---------- */
+on("tgGrid",el=>{el.innerHTML=PB.tg.map(g=>flipCard(`<span class="chip tag">${g.tag}</span><h3>${g.n}</h3><p class="small muted" style="margin:6px 0 0">${g.who}</p>`,`<div class="label" style="color:var(--${g.t})">${g.n}</div><p class="quote" style="--c:var(--${g.t});margin:8px 0 10px">"${g.q}"</p><p class="small" style="margin:0 0 8px;color:var(--muted)"><strong style="color:var(--fg)">What they want:</strong> ${g.want}</p><p class="small" style="margin:0;color:var(--muted)"><strong style="color:var(--fg)">Say:</strong> ${g.say}</p>`,"t-"+g.t)).join("")});
+
+/* ---------- target-group map ---------- */
+on("mm",svg=>{
+  const M=PB.tgmap,R={x:500,y:280};let e="",n="";
+  M.groups.forEach((g,gi)=>{
+    const bw=210,bh=62,side=g.x<R.x?-1:1;
+    e+=`<path class="edge t-${g.t}" data-g="${gi}" d="M${R.x+side*62},${R.y} C${(R.x+g.x)/2},${R.y} ${(R.x+g.x)/2},${g.y} ${g.x-side*bw/2},${g.y}"/>`;
+    const n0=g.leaves.length,gap=n0>3?54:n0>2?92:110;
+    g.leaves.forEach((l,i)=>{const ly=g.y+(i-(n0-1)/2)*gap,lw=180;
+      e+=`<path class="edge t-${g.t}" data-g="${gi}" d="M${g.x+side*bw/2},${g.y} C${(g.x+g.lx)/2},${g.y} ${(g.x+g.lx)/2},${ly} ${g.lx-side*lw/2},${ly}"/>`;
+      n+=`<g class="nd t-${g.t}" data-g="${gi}"><rect x="${g.lx-lw/2}" y="${ly-17}" width="${lw}" height="34" rx="17"/><text x="${g.lx}" y="${ly+4.5}" text-anchor="middle">${esc(l)}</text></g>`;});
+    n+=`<g class="br t-${g.t}" data-g="${gi}" tabindex="0" role="button" aria-label="${esc(g.title+": "+g.sub)}"><rect x="${g.x-bw/2}" y="${g.y-bh/2}" width="${bw}" height="${bh}" rx="14"/><text x="${g.x}" y="${g.y-4}" text-anchor="middle">${esc(g.title)}</text><text class="sub" x="${g.x}" y="${g.y+15}" text-anchor="middle">${esc(g.sub)}</text></g>`;
+  });
+  n+=`<g class="root"><circle cx="${R.x}" cy="${R.y}" r="62"/><text x="${R.x}" y="${R.y-2}" text-anchor="middle">${esc(M.root)}</text><text class="rs" x="${R.x}" y="${R.y+18}" text-anchor="middle">prospect</text></g>`;
+  svg.innerHTML=e+n;
+  const tabs=document.createElement("div");tabs.className="mm-tabs";
+  tabs.innerHTML=M.groups.map((g,gi)=>`<button class="btn t-${g.t}" aria-pressed="false" data-mmg="${gi}">${esc(g.title)}</button>`).join("");
+  $("#mmDetail").before(tabs);
+  const draw=gi=>{
+    $$(".edge,.nd,.br",svg).forEach(p=>p.classList.toggle("hot",+p.dataset.g===gi));
+    $$("[data-mmg]",tabs).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.mmg===gi));
+    const g=M.groups[gi],d=$("#mmDetail");d.className="card mm-detail t-"+g.t;
+    d.innerHTML=`<div class="label" style="color:var(--c)">${g.title} · ${g.sub}</div><h3>${g.h}</h3><p>${g.intro}</p><div class="profiles">${g.members.map(ix=>{const p=PB.tg[ix];return `<div class="profile t-${g.t}"><h4>${p.n}</h4><div class="who2">${p.who}</div><p class="quote">"${p.q}"</p>${p.pain?`<div class="k">Pain point</div><p>${p.pain}</p>`:""}<div class="k">What they want</div><p>${p.want}</p><div class="k">How to pitch it</div><p>${p.say}</p></div>`}).join("")}</div>${g.call?`<p style="margin-top:14px;color:var(--fg)"><strong>On the call:</strong> ${g.call}</p>`:""}`;
+  };
+  $$(".br",svg).forEach(b=>{b.addEventListener("click",()=>draw(+b.dataset.g));b.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();draw(+b.dataset.g)}})});
+  $$(".nd",svg).forEach(b=>{b.style.cursor="pointer";b.addEventListener("click",()=>draw(+b.dataset.g))});
+  $$("[data-mmg]",tabs).forEach(b=>b.onclick=()=>draw(+b.dataset.mmg));
+  draw(0);
+});
+
+/* ---------- cycle wheels ---------- */
+const cyDraw={};
+Object.entries(PB.cycles||{}).forEach(([name,cy])=>{
+  const L=document.getElementById(name+"Loop"),P=document.getElementById(name+"Panel");if(!L||!P)return;
+  const N=cy.nodes.length,rad=37,pt=f=>{const a=-Math.PI/2+f*2*Math.PI/N;return [50+rad*Math.cos(a),50+rad*Math.sin(a)]};
+  let svg=`<svg viewBox="0 0 100 100" aria-hidden="true"><circle class="ring" cx="50" cy="50" r="${rad}"/>`;
+  if(cy.arrows){
+    svg+=`<defs><marker id="${name}Ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="ahead" d="M0 0L10 5L0 10z"/></marker></defs>`;
+    for(let i=0;i<N;i++){const [x1,y1]=pt(i+.3),[x2,y2]=pt(i+.7);svg+=`<path class="arc" d="M${x1.toFixed(2)} ${y1.toFixed(2)} A${rad} ${rad} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}" marker-end="url(#${name}Ah)"/>`}
+  }
+  svg+="</svg>";
+  L.innerHTML=svg+`<div class="center">${cy.center}</div>`+cy.nodes.map((nd,i)=>{const [x,y]=pt(i);return `<button class="node t-${nd.t||cy.t||"coral"}" style="left:${x}%;top:${y}%" aria-pressed="false" data-cy="${i}"><b>${String(i+1).padStart(2,"0")}</b>${nd.n}</button>`}).join("");
+  const draw=i=>{
+    $$(".node",L).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.cy===i));
+    const nd=cy.nodes[i];P.className=`card stage-panel t-${nd.t||cy.t||"coral"}`;
+    const last=i===N-1;
+    P.innerHTML=`<div class="label" style="color:var(--c)">${cy.label||"Step"} ${i+1} of ${N}</div><h3>${nd.n}</h3><p>${nd.a}</p>${nd.list?`<div class="label" style="margin-top:14px">${nd.ll||""}</div><ul>${nd.list.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}${nd.b?`<div class="label" style="margin-top:14px">${nd.bl||""}</div><p style="color:var(--fg)">${nd.b}</p>`:""}${nd.q?`<p class="quote">${nd.q}</p>`:""}<div class="chips" style="margin-top:14px"><button class="btn" data-cyn="${name}" data-cyi="${(i-1+N)%N}">← Previous</button><button class="btn" data-cyn="${name}" data-cyi="${(i+1)%N}">${cy.arrows&&last?"Back to the start ↺":"Next →"}</button>${nd.go?`<a class="btn" href="#${nd.go}" data-go="${nd.go}" style="text-decoration:none">Go to the section</a>`:""}</div>`;
+  };
+  $$(".node",L).forEach(b=>b.onclick=()=>draw(+b.dataset.cy));cyDraw[name]=draw;draw(0);
+});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-cyn]");if(b&&cyDraw[b.dataset.cyn])cyDraw[b.dataset.cyn](+b.dataset.cyi)});
+
+/* ---------- Venn ---------- */
+on("venn",el=>{
+  const V=PB.venn,panel=$("#vennDetail");
+  const draw=k=>{const v=V[k];panel.className="card t-"+v.t+" tint";
+    panel.innerHTML=`<div class="label">${v.label}</div><h3 style="font-family:var(--display);font-size:22px">${v.h}</h3><p>${v.p}</p>${v.list?`<ul>${v.list.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}${v.chips?`<div class="label" style="margin-top:12px">${v.cl||""}</div><div class="chips" style="margin-top:6px">${v.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>`:""}${k!=="all"?`<p class="small" style="margin-top:10px"><a href="#" data-venn="all">← Back to the full picture</a></p>`:""}`;
+    $$("circle",el).forEach(c=>c.style.opacity=(k==="all"||c.dataset.v===k)?1:.3)};
+  $$("circle",el).forEach(c=>{c.addEventListener("click",()=>draw(c.dataset.v));c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();draw(c.dataset.v)}})});
+  document.addEventListener("click",e=>{const a=e.target.closest("[data-venn]");if(a){e.preventDefault();draw(a.dataset.venn)}});
+  draw("all");
+});
+
+/* ---------- vocabulary ---------- */
+on("termDeck",()=>deck("termDeck","termCount",PB.terms,t=>flipCard(`<span class="chip tag">Word you'll hear</span><h3>${esc(t[0])}</h3>`,`<div class="label" style="color:var(--coral)">${esc(t[0])}</div><p style="margin-top:8px">${esc(t[1])}</p>${t[2]?`<p class="quote" style="--c:var(--violet);margin-top:auto">${esc(t[2])}</p>`:""}`),"termPrev","termNext","termShuffle"));
+
+/* ---------- phases ---------- */
+on("road",el=>{
+  let cur=0;
+  const draw=i=>{cur=i;$$(".phase",el).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.ph===i));const p=PB.phases[i];const d=$("#phDetail");d.className="ph-detail t-"+p.t;
+    d.innerHTML=`<div class="card"><div class="label" style="color:var(--c)">${p.label}</div><h3>${p.h}</h3><p>${p.sub}</p><div class="modlist">${p.mods.map(m=>`<div><b>${m[0]}</b><span>${m[1]}<small>${m[2]}</small></span></div>`).join("")}</div></div>
+    <div class="grid" style="align-content:start"><div class="card t-${p.t} tint"><div class="label">By the end of this phase</div><p class="sell">${p.end}</p></div><div class="card"><div class="label">Say it like this</div><p style="color:var(--fg)">${p.say}</p>${p.proj?`<div class="label" style="margin-top:12px">What they build here</div><p>${p.proj}</p>`:""}</div></div>`};
+  el.innerHTML=PB.phases.map((p,i)=>`<button class="phase t-${p.t}" aria-pressed="false" data-ph="${i}"><span class="label">${p.label}</span><h3>${p.h}</h3><small>${p.short}</small></button>`).join("");
+  $$(".phase",el).forEach(b=>b.onclick=()=>draw(+b.dataset.ph));draw(0);
+});
+
+/* ---------- projects ---------- */
+on("projGrid",el=>{
+  el.innerHTML=PB.projects.map(p=>flipCard(`<span class="chip tag">${p.tag}</span><h3>${p.n}</h3>${p.co?`<p class="small muted" style="margin:6px 0 0">${p.co}</p>`:""}`,`<div class="label" style="color:var(--${p.t})">${p.n}</div><p style="margin:8px 0 10px">${p.story}</p>${p.say?`<p class="quote" style="--c:var(--${p.t});margin:0 0 10px">${p.say}</p>`:""}<div class="chips" style="margin-top:auto">${(p.skills||[]).map(s=>`<span class="chip">${s}</span>`).join("")}</div>`,"t-"+p.t,`data-f="${p.f||""}"`)).join("");
+  if(PB.projectFilters&&$("#projFilter"))filterChips("projFilter",PB.projectFilters,"f",f=>$$(".flip",el).forEach(c=>c.hidden=!(f==="all"||c.dataset.f===f)));
+});
+
+/* ---------- people ---------- */
+on("people",el=>{
+  el.innerHTML=PB.people.map((p,i)=>`<button class="person t-${p[3]}" aria-pressed="false" data-p="${i}"><div class="av">${p[0].split(" ").map(w=>w[0]).join("").slice(0,2)}</div><div><b>${p[0]}</b><small>${p[1]}</small></div></button>`).join("");
+  const draw=i=>{$$(".person",el).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.p===i));const p=PB.people[i];const n=$("#personNote");n.className=`card person-note t-${p[3]} tint`;n.innerHTML=`<div class="label">${p[0]} · ${p[1]}</div><p style="color:var(--fg);margin-top:6px">${p[2]}</p>`};
+  $$(".person",el).forEach(b=>b.onclick=()=>draw(+b.dataset.p));draw(0);
+});
+
+/* ---------- learner stories ---------- */
+on("voiceGrid",el=>{
+  el.innerHTML=PB.voices.map(v=>`<div class="card tcard" data-f="${v.f||""}">${v.from?`<div class="trans"><span class="chip">${v.from}</span><span class="arrow">→</span><span class="chip t-coral" style="border-color:var(--coral)">${v.to}</span></div>`:""}${v.q?`<p class="quote">"${v.q}"</p>`:""}<div class="who">${v.n}${v.role?" · "+v.role:""}</div></div>`).join("");
+  if(PB.voiceFilters&&$("#voiceFilter"))filterChips("voiceFilter",PB.voiceFilters,"f",f=>$$(".tcard",el).forEach(c=>c.hidden=!(f==="all"||c.dataset.f===f)));
+});
+
+/* ---------- sample call ---------- */
+on("calls",el=>{
+  let mode=Object.keys(PB.calls)[0];
+  const draw=i=>{const cs=PB.calls[mode];$$(".cstep",el).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.call===i));const c=cs[i];const tone=i<cs.length*.4?"t-coral":i<cs.length*.8?"t-violet":"t-mint";const d=$("#cdetail");d.className="card cdetail "+tone;
+    d.innerHTML=`<div class="label" style="color:var(--c)">Step ${i+1} of ${cs.length} · ${c.goal}</div><h3 style="font-family:var(--display);font-size:22px;margin-top:4px">${c.s}</h3><div class="bubbles">${c.lines.map(l=>`<div class="bub ${l[0]==="you"?"you":"them"}"><small>${l[0]==="you"?"You":PB.persona}</small>${l[1]}</div>`).join("")}</div>${c.tip?`<p class="tip"><strong>Why this works:</strong> ${c.tip}</p>`:""}${c.go?`<p class="small" style="margin-top:8px"><a href="#${c.go}" data-go="${c.go}">More on this →</a></p>`:""}`};
+  const render=()=>{const cs=PB.calls[mode];el.innerHTML=cs.map((c,i)=>`<button class="cstep ${i<cs.length*.4?"t-coral":i<cs.length*.8?"t-violet":"t-mint"}" aria-pressed="false" data-call="${i}"><b>${String(i+1).padStart(2,"0")}</b><span>${c.s}</span></button>`).join("");$$(".cstep",el).forEach(b=>b.onclick=()=>draw(+b.dataset.call));draw(0)};
+  if($('[data-seg="call"]'))seg("call",k=>{mode=k;render()});else render();
+});
+
+/* ---------- probing ---------- */
+on("probe",el=>{
+  el.innerHTML=PB.probe.map((p,i)=>`<div class="pq" tabindex="0" role="button" aria-expanded="false"><span class="n">Q${i+1}</span><div><div class="q">${p[0]}</div><div class="why">${p[1]}</div></div></div>`).join("");
+  $$(".pq",el).forEach(q=>{const t=()=>q.setAttribute("aria-expanded",q.getAttribute("aria-expanded")!=="true");q.onclick=t;q.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();t()}}});
+});
+
+/* ---------- objections ---------- */
+on("rebDeck",()=>deck("rebDeck","rebCount",PB.reb,(r,i)=>flipCard(`<span class="chip tag">They say</span><h3>${esc(r[0])}</h3>`,`<div class="label" style="color:var(--coral)">A good answer</div><p style="margin-top:8px">${r[1]}</p>${r[2]?`<p class="quote" style="--c:var(--violet);margin-top:auto">${r[2]}</p>`:""}`),"rebPrev","rebNext","rebShuffle"));
+
+/* ---------- share kit ---------- */
+on("sits",el=>{
+  const L=PB.links;const tones=["coral","violet","mint","amber","rose","violet","coral"];
+  el.innerHTML=PB.sits.map((s,i)=>`<button class="sit t-${tones[i%tones.length]}" aria-pressed="false" data-sit="${i}"><span class="label">${s[0]}</span>${s[1]}</button>`).join("");
+  const draw=i=>{$$(".sit",el).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.sit===i));const s=PB.sits[i];$("#sitOut").innerHTML=`<div class="label">Send this</div><div class="links" style="margin-top:10px">${s[2].map(k=>`<a class="lnk" href="${L[k][2]}" target="_blank" rel="noopener"><span>${L[k][0]}<small>${L[k][1]}</small></span><span class="go">Open ↗</span></a>`).join("")}</div><p style="margin-top:12px;color:var(--fg)">${s[3]}</p>`};
+  $$(".sit",el).forEach(b=>b.onclick=()=>draw(+b.dataset.sit));draw(0);
+});
+
+/* ---------- quiz ---------- */
+on("qz",el=>{
+  const qz=PB.quiz;const pass=Math.ceil(qz.length*.85);
+  const render=()=>{
+    el.innerHTML=qz.map((q,i)=>`<div class="card" data-q="${i}"><div class="label">Question ${i+1}</div><h3>${q[0]}</h3><div class="opts">${q[1].map((o,j)=>`<button class="opt" data-o="${j}">${o}</button>`).join("")}</div><div class="explain" hidden></div></div>`).join("");
+    $("#qzScore").textContent=`0 / ${qz.length} answered`;
+    $$("[data-q]",el).forEach(c=>{const i=+c.dataset.q;$$(".opt",c).forEach(b=>b.onclick=()=>{
+      if(c.dataset.done)return;c.dataset.done=1;const j=+b.dataset.o,ok=j===qz[i][2];
+      $$(".opt",c).forEach((x,k)=>{x.disabled=true;if(k===qz[i][2])x.classList.add("right")});if(!ok)b.classList.add("wrong");
+      const ex=$(".explain",c);ex.hidden=false;ex.innerHTML=`<strong style="color:var(--${ok?"mint":"rose"})">${ok?"Right.":"Not quite."}</strong> ${qz[i][3]}`;
+      const done=$$("[data-done]",el).length,right=$$(".opt.right",el).filter(x=>!x.closest("[data-q]").querySelector(".wrong")).length;
+      $("#qzScore").textContent=done===qz.length?`Done: ${right} / ${qz.length} correct${right>=pass?" · ready for calls":" · revisit the pages you missed"}`:`${done} / ${qz.length} answered · ${right} correct`;
+    })});
+  };
+  $("#qzReset").onclick=render;render();
+});
+
+/* ---------- boot ---------- */
+buildNav();
+let start=(location.hash||"").slice(1);
+if(!pages.some(p=>p.id===start)){try{start=localStorage.getItem(PB.key+"-page")||""}catch(e){start=""}}
+show(pages.some(p=>p.id===start)?start:pages[0].id,false);
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(pages.some(p=>p.id===h))show(h,false)});
+})();
+</script>
+</body>
+</html>
